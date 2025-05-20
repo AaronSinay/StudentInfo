@@ -51,10 +51,10 @@ namespace StudentInfo
         // Prevents other symbols other than number to be inputted
         private void TextBox_IDNO_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Allow only digits and control characters (like backspace)
+
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
-                e.Handled = true; // Suppress the character
+                e.Handled = true;
             }
         }
 
@@ -63,10 +63,10 @@ namespace StudentInfo
         // Prevents Number and Other Symbols from being inputted should be obvious tho
         private void TextBox_Name_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Allow only letters, periods, spaces and control characters
+
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != ' ' && !char.IsControl(e.KeyChar))
             {
-                e.Handled = true; // Suppress the character
+                e.Handled = true;
             }
         }
 
@@ -107,13 +107,13 @@ namespace StudentInfo
         // Just initializing the key component of GridView like column and it's layout
         private void InitDataGrid()
         {
-            // Adding Columns
+
             dataGridView.Columns.Add("IDNo", "ID No.");
             dataGridView.Columns.Add("Name", "Name");
             dataGridView.Columns.Add("Email", "Email");
             dataGridView.Columns.Add("Address", "Address");
 
-            // Fixing layout
+
             dataGridView.Columns["IDNo"].Width = 80;
             dataGridView.Columns["Name"].Width = 150;
             dataGridView.Columns["Email"].Width = 150;
@@ -152,7 +152,7 @@ namespace StudentInfo
                         MessageBox.Show("Database was empty. 'Students' table created successfully.");
                     }
 
-                    // Always load data after structure is ensured
+                    // Always load data after structure is created/ensured :)
                     LoadData();
                 }
                 catch (Exception ex)
