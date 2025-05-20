@@ -24,17 +24,20 @@ namespace StudentInfo
             InitializeComponent();
             InitDataGrid();
 
-            // Add TextChanged event handlers to all textboxes
+
             textBox_IDNO.TextChanged += TextBox_TextChanged;
             textBox_Name.TextChanged += TextBox_TextChanged;
             textBox_Email.TextChanged += TextBox_TextChanged;
             textBox_Address.TextChanged += TextBox_TextChanged;
 
-            // Add KeyPress event handlers for input validation
+
             textBox_IDNO.KeyPress += TextBox_IDNO_KeyPress;
             textBox_Name.KeyPress += TextBox_Name_KeyPress;
         }
 
+
+
+        // Startup executions
         private void Form_InfoHandler_Load(object sender, EventArgs e)
         {
             button_Remove.Enabled = false;
@@ -43,6 +46,9 @@ namespace StudentInfo
             EnsureDatabaseStructure();
         }
 
+
+
+        // Prevents other symbols other than number to be inputted
         private void TextBox_IDNO_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Allow only digits and control characters (like backspace)
@@ -52,6 +58,9 @@ namespace StudentInfo
             }
         }
 
+
+
+        // Prevents Number and Other Symbols from being inputted should be obvious tho
         private void TextBox_Name_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Allow only letters, periods, spaces and control characters
@@ -61,9 +70,12 @@ namespace StudentInfo
             }
         }
 
+
+
+        // Just checks if textBoxes are empty or nah
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            // For Add button - check if all textboxes have values
+
             bool allTextBoxesFilled = !string.IsNullOrEmpty(textBox_IDNO.Text) &&
                                      !string.IsNullOrEmpty(textBox_Name.Text) &&
                                      !string.IsNullOrEmpty(textBox_Email.Text) &&
@@ -71,10 +83,13 @@ namespace StudentInfo
 
             button_Add.Enabled = allTextBoxesFilled;
 
-            // For Search button - enable if at least ID field has value
+
             button_Search.Enabled = !string.IsNullOrEmpty(textBox_IDNO.Text);
         }
 
+
+
+        // Just check if an item is selected should be obvious what this does
         private void dataGridView_SelectionChanged(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)
@@ -87,6 +102,9 @@ namespace StudentInfo
             }
         }
 
+
+
+        // Just initializing the key component of GridView like column and it's layout
         private void InitDataGrid()
         {
             // Adding Columns
@@ -105,6 +123,9 @@ namespace StudentInfo
             dataGridView.RowTemplate.Height = 30;
         }
 
+
+
+        // It make sure that Students Table exist in the Database if not then make one
         private void EnsureDatabaseStructure()
         {
             using (OleDbConnection conn = new OleDbConnection(connectionString))
@@ -141,6 +162,9 @@ namespace StudentInfo
             }
         }
 
+
+
+        // This load the GridView with Database datas
         private void LoadData()
         {
             using (OleDbConnection conn = new OleDbConnection(connectionString))
@@ -174,6 +198,9 @@ namespace StudentInfo
             }
         }
 
+
+
+        // Should be Obvious
         private void button_Add_Click(object sender, EventArgs e)
         {
             string idNo = textBox_IDNO.Text;
@@ -181,10 +208,11 @@ namespace StudentInfo
             string email = textBox_Email.Text;
             string address = textBox_Address.Text;
 
+            // Checks if textboxes requirement are met
             if (string.IsNullOrEmpty(idNo) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(address))
             {
                 MessageBox.Show("Please fill in all fields", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;  // Exit if any field is empty
+                return;
             }
 
             // Add to database
@@ -212,6 +240,7 @@ namespace StudentInfo
             }
         }
 
+        // Yeah it removes not only from GridView also to Database
         private void button_Remove_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)
@@ -242,6 +271,9 @@ namespace StudentInfo
             }
         }
 
+
+
+        // As the name suggest it searches(for ID)
         private void button_Search_Click(object sender, EventArgs e)
         {
             string searchTerm = textBox_IDNO.Text.Trim();
@@ -285,6 +317,9 @@ namespace StudentInfo
             }
         }
 
+
+
+        // Should be Clear what this does
         private void ClearTextBox()
         {
             textBox_IDNO.Clear();
