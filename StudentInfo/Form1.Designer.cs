@@ -146,6 +146,7 @@
             this.button_Save.TabIndex = 6;
             this.button_Save.Text = "Save";
             this.button_Save.UseVisualStyleBackColor = true;
+            this.button_Save.Click += new System.EventHandler(this.button_Save_Click);
             // 
             // dataGridView
             // 

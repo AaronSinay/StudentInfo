@@ -19,6 +19,9 @@ namespace StudentInfo
     {
         string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Admin\source\repos\StudentInfo.accdb";
 
+        // Class-level variable to store the original ID
+        private string originalIDNo = string.Empty;
+
         public Form_InfoHandler()
         {
             InitializeComponent();
@@ -43,6 +46,7 @@ namespace StudentInfo
             button_Remove.Enabled = false;
             button_Add.Enabled = false;
             button_Search.Enabled = false;
+            button_Save.Enabled = false;
             EnsureDatabaseStructure();
         }
 
@@ -172,7 +176,7 @@ namespace StudentInfo
                 try
                 {
                     conn.Open();
-                    string query = "SELECT * FROM Students";
+                    string query = "SELECT * FROM Students ORDER BY IDNo ASC";
                     OleDbDataAdapter da = new OleDbDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -304,15 +308,82 @@ namespace StudentInfo
                         textBox_Name.Text = row["Name"].ToString();
                         textBox_Email.Text = row["Email"].ToString();
                         textBox_Address.Text = row["Address"].ToString();
+
+                        // Store the original ID in the class-level variable
+                        originalIDNo = row["IDNo"].ToString();
+
+                        button_Save.Enabled = true;
+
+                        MessageBox.Show("Student found", "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
+                        button_Save.Enabled = false;
                         MessageBox.Show("No student found with that ID number", "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error searching record: " + ex.Message);
+                }
+            }
+        }
+
+
+        // Saves the updated student information
+        private void button_Save_Click(object sender, EventArgs e)
+        {
+            // Make sure the student was found (i.e., originalIDNo is set)
+            if (string.IsNullOrEmpty(originalIDNo))
+            {
+                MessageBox.Show("Please search for a student record first", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string name = textBox_Name.Text;
+            string email = textBox_Email.Text;
+            string address = textBox_Address.Text;
+
+            // Ensure all fields except ID are filled in
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(address))
+            {
+                MessageBox.Show("Please fill in all fields", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    // Update only Name, Email, and Address. ID No should remain unchanged
+                    string query = "UPDATE Students SET Name = @Name, Email = @Email, Address = @Address WHERE IDNo = @OriginalIDNo";
+
+                    OleDbCommand cmd = new OleDbCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Address", address);
+                    cmd.Parameters.AddWithValue("@OriginalIDNo", originalIDNo);  // Ensure we update using the original ID
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Student information updated successfully");
+
+                        // Optionally, refresh the data grid or reset form fields after saving
+                        ClearTextBox();
+                        LoadData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to update student information");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error updating database: " + ex.Message);
                 }
             }
         }
