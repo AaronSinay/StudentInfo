@@ -120,30 +120,30 @@
             // 
             // button_Search
             // 
-            this.button_Search.Location = new System.Drawing.Point(532, 615);
+            this.button_Search.Location = new System.Drawing.Point(792, 615);
             this.button_Search.Name = "button_Search";
             this.button_Search.Size = new System.Drawing.Size(254, 46);
-            this.button_Search.TabIndex = 7;
+            this.button_Search.TabIndex = 8;
             this.button_Search.Text = "Search";
             this.button_Search.UseVisualStyleBackColor = true;
             this.button_Search.Click += new System.EventHandler(this.button_Search_Click);
             // 
             // button_Remove
             // 
-            this.button_Remove.Location = new System.Drawing.Point(272, 615);
+            this.button_Remove.Location = new System.Drawing.Point(532, 615);
             this.button_Remove.Name = "button_Remove";
             this.button_Remove.Size = new System.Drawing.Size(254, 46);
-            this.button_Remove.TabIndex = 6;
+            this.button_Remove.TabIndex = 7;
             this.button_Remove.Text = "Remove";
             this.button_Remove.UseVisualStyleBackColor = true;
             this.button_Remove.Click += new System.EventHandler(this.button_Remove_Click);
             // 
             // button_Save
             // 
-            this.button_Save.Location = new System.Drawing.Point(792, 615);
+            this.button_Save.Location = new System.Drawing.Point(272, 615);
             this.button_Save.Name = "button_Save";
             this.button_Save.Size = new System.Drawing.Size(254, 46);
-            this.button_Save.TabIndex = 8;
+            this.button_Save.TabIndex = 6;
             this.button_Save.Text = "Save";
             this.button_Save.UseVisualStyleBackColor = true;
             // 
